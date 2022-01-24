@@ -1,4 +1,4 @@
-from fastapi import FastAPI, File
+from fastapi import FastAPI, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
 from tensorflow.keras.models import load_model
@@ -16,6 +16,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+model = load_model('../saved_models/initial_model')
+
+
 label_map = {
     '0': 'cassava_bacterial_blight',
     '1': 'cassava_brown_streak_disease',
@@ -31,10 +34,10 @@ def root():
 
 
 @app.post("/predict/")
-async def create_file(file: bytes = File(...)):
-    model = load_model('../saved_models/initial_model')
+async def create_file(file: File(...)):
     print(file)
     image = PIL.Image.open(io.BytesIO(file))
+    image = PIL.Image.open(file.file)
     image = image.resize((512, 512))
     #true_index = np.argmax(y[0])
 
