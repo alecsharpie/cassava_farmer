@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tensorflow.keras.models import load_model
 import numpy as np
 import PIL
+import io
 
 app = FastAPI()
 
@@ -32,8 +33,8 @@ def root():
 @app.post("/predict/")
 async def create_file(file: bytes = File(...)):
     model = load_model('../saved_models/initial_model')
-
-    image = PIL.Image.open(file)
+    print(file)
+    image = PIL.Image.open(io.BytesIO(file))
     image = image.resize((512, 512))
     #true_index = np.argmax(y[0])
 
@@ -43,3 +44,5 @@ async def create_file(file: bytes = File(...)):
     #print("True label: " + label_map.values().tolist()[true_index])
     #print("Predicted label: " + class_names[predicted_index])
     return {"prediction": prediction_scores}
+
+# ValueError: embedded null byte

@@ -34,3 +34,5 @@ uvicorn
 
 # model
 tensorflow
+
+python-multipart
