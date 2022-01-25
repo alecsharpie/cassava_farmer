@@ -16,8 +16,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = load_model('../saved_models/initial_model2')
-
 
 label_map = {
     '0': 'cassava_bacterial_blight',
@@ -34,21 +32,32 @@ def root():
 
 
 @app.post("/predict/")
-async def create_file(file: bytes = File(...)):
+async def predict(file: bytes = File(...)):
+
+    model = load_model('saved_models/initial_model2')
 
     image = PIL.Image.open(io.BytesIO(file))
     #image = PIL.Image.open(file.file)
     image = image.resize((512, 512))
-    image_arr = np.asarray(image)
+    image_arr = np.asarray(image) / 255.0
+
     #true_index = np.argmax(y[0])
-    print(image_arr)
-    print(image_arr.shape)
+    print('input size: ', image_arr.shape)
     # Expand the validation image to (1, 224, 224, 3) before predicting the label
     prediction_scores = model.predict(np.expand_dims(image_arr, axis=0))
     #predicted_index = np.argmax(prediction_scores)
     #print("True label: " + label_map.values().tolist()[true_index])
     #print("Predicted label: " + class_names[predicted_index])
-    print(prediction_scores)
-    return {"prediction": 0}
+    print(prediction_scores[0])
+    class_names = list(label_map.values())
+
+    predictions_dict = {
+        key: float(value)
+        for key, value in zip(class_names, list(prediction_scores[0]))
+    }
+    print(predictions_dict)
+    print(type(predictions_dict))
+
+    return predictions_dict
 
 # ValueError: embedded null byte
