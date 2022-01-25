@@ -16,7 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-model = load_model('../saved_models/initial_model')
+model = load_model('../saved_models/initial_model2')
 
 
 label_map = {
