@@ -43,6 +43,7 @@ async def predict(file: bytes = File(...)):
     prediction_scores = model.predict(np.expand_dims(image_arr, axis=0))
 
     class_names = list(label_map.values())
+
     predictions_dict = {
         key: float(value)
         for key, value in zip(class_names, list(prediction_scores[0]))
