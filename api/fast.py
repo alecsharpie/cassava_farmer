@@ -34,18 +34,21 @@ def root():
 
 
 @app.post("/predict/")
-async def create_file(file: File(...)):
-    print(file)
-    image = PIL.Image.open(io.BytesIO(file))
-    image = PIL.Image.open(file.file)
-    image = image.resize((512, 512))
-    #true_index = np.argmax(y[0])
+async def create_file(file: bytes = File(...)):
 
+    image = PIL.Image.open(io.BytesIO(file))
+    #image = PIL.Image.open(file.file)
+    image = image.resize((512, 512))
+    image_arr = np.asarray(image)
+    #true_index = np.argmax(y[0])
+    print(image_arr)
+    print(image_arr.shape)
     # Expand the validation image to (1, 224, 224, 3) before predicting the label
-    prediction_scores = model.predict(np.expand_dims(image, axis=0))
+    prediction_scores = model.predict(np.expand_dims(image_arr, axis=0))
     #predicted_index = np.argmax(prediction_scores)
     #print("True label: " + label_map.values().tolist()[true_index])
     #print("Predicted label: " + class_names[predicted_index])
-    return {"prediction": prediction_scores}
+    print(prediction_scores)
+    return {"prediction": 0}
 
 # ValueError: embedded null byte
