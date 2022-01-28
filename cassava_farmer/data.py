@@ -1,3 +1,4 @@
+from re import X
 from tensorflow.keras.utils import image_dataset_from_directory
 from google.cloud import storage
 from PIL import Image
@@ -48,7 +49,20 @@ def get_data_from_gcp():
 
         all_targets = all_targets + targets
 
-    return np.array(all_images), np.array(all_targets)
+    X = np.array(all_images)
+
+    y = np.array(all_targets)
+
+    p = np.random.permutation(len(X))
+    X, y = X[p], y[p]
+
+    split_idx = int(len(X) / 0.7)
+
+    X_train, y_train = X[:split_idx], y[:split_idx]
+
+    X_val, y_val = X[split_idx:], y[split_idx:]
+
+    return X_train, X_val, y_val, y_train
 
 
 def get_image_generator_local(batch_size):
