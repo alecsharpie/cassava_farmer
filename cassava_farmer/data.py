@@ -67,7 +67,7 @@ def get_data_from_gcp():
 
 def get_image_generator_local(batch_size):
 
-    train_path = '../raw_data/cassava-leaf-disease-classification/train_images'
+    train_path = 'raw_data/cassava-leaf-disease-classification/train_images'
 
 
     train_ds = image_dataset_from_directory(
@@ -89,7 +89,7 @@ def get_image_generator_local(batch_size):
     val_size = val_ds.cardinality().numpy()
     val_ds = val_ds.unbatch().batch(batch_size)
     val_ds = val_ds.repeat()
-    return train_ds, val_ds
+    return train_ds, train_size, val_ds, val_size
 
 if __name__ == "__main__":
-    print(get_image_generator_local)
+    print(get_image_generator_local())
