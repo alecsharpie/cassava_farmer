@@ -1,7 +1,6 @@
 from cassava_farmer.data import get_data_from_gcp, get_image_generator_local
 from cassava_farmer.model import build_aug_eff_model
 
-
 class Trainer:
 
     def __init__(self, where):
@@ -26,7 +25,6 @@ class Trainer:
                             validation_data=(X_val, y_val),
                             validation_steps=validation_steps).history
 
-
         elif self.where == 'local':
             train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
             batch_size = 8
@@ -41,10 +39,9 @@ class Trainer:
                             validation_data=val_ds,
                             validation_steps=validation_steps).history
 
-
+        model.save('../saved_models/aug_eff_model_gcp_data2', save_format='h5')
         print('min accuracy', min(history['accuracy']))
 
-
 if __name__ == "__main__":
-    trainer = Trainer('local')
+    trainer = Trainer('gcp')
     trainer.train()
