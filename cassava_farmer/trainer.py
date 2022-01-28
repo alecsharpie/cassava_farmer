@@ -9,6 +9,6 @@ class Trainer:
 
     def train():
 
-        data = get_data_from_gcp
+        data = get_data_from_gcp()
 
         model = build_aug_eff_model()
