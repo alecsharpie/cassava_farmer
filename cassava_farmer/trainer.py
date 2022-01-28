@@ -38,8 +38,7 @@ class Trainer:
                             steps_per_epoch=steps_per_epoch,
                             validation_data=val_ds,
                             validation_steps=validation_steps).history
-
-        model.save('../saved_models/aug_eff_model_gcp_data2', save_format='h5')
+        model.save('saved_models/aug_eff_model_gcp_data2', save_format='h5')
         print('min accuracy', min(history['accuracy']))
 
 if __name__ == "__main__":
