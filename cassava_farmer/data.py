@@ -5,7 +5,6 @@ from PIL import Image
 import io
 import numpy as np
 
-
 def get_data_from_gcp():
 
     class_names = [
@@ -69,13 +68,11 @@ def get_image_generator_local(batch_size):
 
     train_path = 'raw_data/cassava-leaf-disease-classification/train_images'
 
-
     train_ds = image_dataset_from_directory(
         train_path, batch_size=32, subset='training', validation_split=.20, seed = 42, image_size=(512, 512),
     )
 
     class_names = train_ds.class_names
-
 
     train_size = train_ds.cardinality().numpy()
     train_ds = train_ds.unbatch().batch(batch_size)

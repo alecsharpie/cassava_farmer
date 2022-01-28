@@ -16,7 +16,6 @@ def build_aug_eff_model(input_shape, output_classes):
         layers.RandomFlip(mode="horizontal")
     ])
 
-
     dummy_input = layers.Input(shape=input_shape)
 
     topless_efficient_net = EfficientNetB0(include_top=False,
