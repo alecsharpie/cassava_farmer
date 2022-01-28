@@ -9,7 +9,7 @@ class Trainer:
 
     def train(self):
 
-        model = build_aug_eff_model()
+        model = build_aug_eff_model((512, 512, 3), 5)
 
         if self.where == 'gcp':
             X_train, X_val, y_val, y_train = get_data_from_gcp()
@@ -28,11 +28,11 @@ class Trainer:
 
 
         elif self.where == 'local':
-            train_ds, val_ds = get_image_generator_local(8)
+            train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
             batch_size = 8
 
-            steps_per_epoch = train_ds.cardinality().numpy() // batch_size
-            validation_steps = val_ds.cardinality().numpy() // batch_size
+            steps_per_epoch = train_size // batch_size
+            validation_steps = val_size // batch_size
 
             history = model.fit(train_ds,
                             epochs=1,

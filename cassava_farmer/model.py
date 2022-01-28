@@ -41,3 +41,5 @@ def build_aug_eff_model(input_shape, output_classes):
 
     aug_eff_model.build((None, 512, 512, 3))
     aug_eff_model.summary()
+
+    return aug_eff_model
