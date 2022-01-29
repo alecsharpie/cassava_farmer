@@ -1,5 +1,9 @@
 from cassava_farmer.data import get_data_from_gcp, get_image_generator_local
-from cassava_farmer.model import build_aug_eff_model
+from cassava_farmer.model import build_aug_eff_model, save_model_to_gcp
+
+from tensorflow.keras.callbacks import EarlyStopping
+
+import json
 
 class Trainer:
 
@@ -32,13 +36,21 @@ class Trainer:
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
 
+            es = EarlyStopping(patience = 10)
+
             history = model.fit(train_ds,
-                            epochs=1,
+                            epochs=5,
                             batch_size = batch_size,
                             steps_per_epoch=steps_per_epoch,
                             validation_data=val_ds,
-                            validation_steps=validation_steps).history
-        model.save('saved_models/aug_eff_model_gcp_data2', save_format='h5')
+                            validation_steps=validation_steps,
+                            callbacks = [es]).history
+
+        json.dump(history, 'history_aug_eff_model.json')
+        model.save('aug_eff_model', save_format='h5')
+
+        save_model_to_gcp()
+
         print('min accuracy', min(history['accuracy']))
 
 if __name__ == "__main__":

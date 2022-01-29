@@ -2,6 +2,8 @@ from tensorflow.keras import layers
 from tensorflow.keras import Sequential
 from tensorflow.keras.applications.efficientnet import EfficientNetB0
 
+from google.cloud import storage
+
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 import functools
 
@@ -42,3 +44,39 @@ def build_aug_eff_model(input_shape, output_classes):
     aug_eff_model.summary()
 
     return aug_eff_model
+
+
+def save_model_to_gcp():
+
+    BUCKET_NAME = "image-datasets-alecsharpie"
+    storage_location = "/cassava_farmer/models/"
+    local_model_filenames = ["aug_eff_model",'history_aug_eff_model.json']
+
+    client = storage.Client()
+
+    bucket = client.bucket(BUCKET_NAME)
+
+    blob = bucket.blob(storage_location)
+
+    for file_name in local_model_filenames:
+        blob.upload_from_filename(file_name)
+
+
+def get_model_from_gcp_blob():
+
+    # get data from my google storage bucket
+    BUCKET_NAME = "image-datasets-alecsharpie"
+
+    cloud_storage_location = "/cassava_farmer/models/"
+
+    local_model_filename = "trained_aug_eff_model"
+
+    client = storage.Client()  # verifies $GOOGLE_APPLICATION_CREDENTIALS
+
+    bucket = client.bucket(BUCKET_NAME)
+
+    blob = bucket.blob(cloud_storage_location)
+
+    blob.download_to_filename(local_model_filename)
+    print('Model Downloaded!')
+    return None
