@@ -58,7 +58,7 @@ pypi:
 #      GCP
 # ----------------------------------
 
-BUCKET_NAME=XXXXX
+BUCKET_NAME=image-datasets-alecsharpie
 
 REGION=asia-east1
 
@@ -70,11 +70,12 @@ FILENAME=trainer
 
 JOB_NAME=taxi_fare_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
 
-gcloud ai-platform jobs submit training ${JOB_NAME} \
-  --job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
-  --package-path ${PACKAGE_NAME} \
-  --module-name ${PACKAGE_NAME}.${FILENAME} \
-  --python-version=${PYTHON_VERSION} \
-  --runtime-version=${RUNTIME_VERSION} \
-  --region ${REGION} \
-  --stream-logs
+gcp_submit_training:
+	gcloud ai-platform jobs submit training ${JOB_NAME} \
+		--job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+		--package-path ${PACKAGE_NAME} \
+		--module-name ${PACKAGE_NAME}.${FILENAME} \
+		--python-version=${PYTHON_VERSION} \
+		--runtime-version=${RUNTIME_VERSION} \
+		--region ${REGION} \
+		--stream-logs
