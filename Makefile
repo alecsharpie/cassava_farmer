@@ -53,3 +53,28 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+# ----------------------------------
+#      GCP
+# ----------------------------------
+
+BUCKET_NAME=XXXXX
+
+REGION=asia-east1
+
+PYTHON_VERSION=3.7
+RUNTIME_VERSION=1.15
+
+PACKAGE_NAME=cassava_farmer
+FILENAME=trainer
+
+JOB_NAME=taxi_fare_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
+
+gcloud ai-platform jobs submit training ${JOB_NAME} \
+  --job-dir gs://${BUCKET_NAME}/${BUCKET_TRAINING_FOLDER}  \
+  --package-path ${PACKAGE_NAME} \
+  --module-name ${PACKAGE_NAME}.${FILENAME} \
+  --python-version=${PYTHON_VERSION} \
+  --runtime-version=${RUNTIME_VERSION} \
+  --region ${REGION} \
+  --stream-logs
