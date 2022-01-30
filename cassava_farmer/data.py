@@ -21,7 +21,7 @@ def get_data_from_gcp():
     for class_id, class_name in enumerate(class_names):
 
         blobs = bucket.list_blobs(
-            prefix=f"cassava_farmer/train_images_small/{class_name}")
+            prefix=f"cassava_farmer/train_images/{class_name}")
 
         images = []
 
@@ -60,7 +60,7 @@ def get_data_from_gcp():
 
     X_val, y_val = X[split_idx:], y[split_idx:]
 
-    return X_train, X_val, y_val, y_train
+    return X_train, X_val, y_train, y_val
 
 
 def get_image_generator_local(batch_size):

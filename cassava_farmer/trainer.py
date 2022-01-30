@@ -17,15 +17,15 @@ class Trainer:
         model = build_aug_eff_model((512, 512, 3), 5)
 
         if self.where == 'gcp':
-            X_train, X_val, y_val, y_train = get_data_from_gcp()
+            X_train, X_val, y_train, y_val = get_data_from_gcp()
 
-            batch_size = 8
+            batch_size = 32
 
             steps_per_epoch = len(X_train) // batch_size
             validation_steps = len(X_val) // batch_size
 
             history = model.fit(X_train, y_train,
-                            epochs=1,
+                            epochs=100,
                             batch_size = batch_size,
                             steps_per_epoch=steps_per_epoch,
                             validation_data=(X_val, y_val),
