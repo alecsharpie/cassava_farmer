@@ -50,6 +50,8 @@ class Trainer:
         json.dump(history, out_file, indent = "")
         out_file.close()
 
+        print(history)
+
         model.save('aug_eff_model', save_format='h5')
 
         save_model_to_gcp()

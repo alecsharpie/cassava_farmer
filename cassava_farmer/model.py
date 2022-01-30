@@ -49,7 +49,7 @@ def build_aug_eff_model(input_shape, output_classes):
 def save_model_to_gcp():
 
     BUCKET_NAME = "image-datasets-alecsharpie"
-    storage_location = "/cassava_farmer/models/"
+    storage_location = "cassava_farmer/models/"
     local_model_filenames = ["aug_eff_model",'history_aug_eff_model.json']
 
     client = storage.Client()
@@ -67,7 +67,7 @@ def get_model_from_gcp_blob():
     # get data from my google storage bucket
     BUCKET_NAME = "image-datasets-alecsharpie"
 
-    cloud_storage_location = "/cassava_farmer/models/"
+    cloud_storage_location = "cassava_farmer/models/"
 
     local_model_filename = "trained_aug_eff_model"
 
