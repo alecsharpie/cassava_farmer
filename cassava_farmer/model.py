@@ -50,7 +50,6 @@ def save_model_to_gcp():
 
     BUCKET_NAME = "image-datasets-alecsharpie"
     storage_location = "cassava_farmer/models/"
-    local_model_filenames = ["aug_eff_model",'history_aug_eff_model.json']
 
     client = storage.Client()
 
@@ -58,8 +57,9 @@ def save_model_to_gcp():
 
     blob = bucket.blob(storage_location)
 
-    for file_name in local_model_filenames:
-        blob.upload_from_filename(file_name)
+    blob.upload_from_filename('aug_eff_model.h5')
+    blob.upload_from_filename('history_aug_eff_model.json')
+
 
 
 def get_model_from_gcp_blob():

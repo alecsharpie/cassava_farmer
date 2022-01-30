@@ -12,6 +12,8 @@ class Trainer:
 
     def train(self):
 
+        es = EarlyStopping(patience=10)
+
         model = build_aug_eff_model((512, 512, 3), 5)
 
         if self.where == 'gcp':
@@ -27,7 +29,8 @@ class Trainer:
                             batch_size = batch_size,
                             steps_per_epoch=steps_per_epoch,
                             validation_data=(X_val, y_val),
-                            validation_steps=validation_steps).history
+                            validation_steps=validation_steps,
+                            callbacks = [es]).history
 
         elif self.where == 'local':
             train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
@@ -35,8 +38,6 @@ class Trainer:
 
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
-
-            es = EarlyStopping(patience = 10)
 
             history = model.fit(train_ds,
                             epochs=5,
@@ -52,7 +53,7 @@ class Trainer:
 
         print(history)
 
-        model.save('aug_eff_model', save_format='h5')
+        model.save('aug_eff_model.h5', save_format='h5')
 
         save_model_to_gcp()
 
