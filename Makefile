@@ -68,7 +68,7 @@ RUNTIME_VERSION=1.15
 PACKAGE_NAME=cassava_farmer
 FILENAME=trainer
 
-JOB_NAME=taxi_fare_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
+JOB_NAME=cassava_training_pipeline_$(shell date +'%Y%m%d_%H%M%S')
 
 gcp_submit_training:
 	gcloud ai-platform jobs submit training ${JOB_NAME} \
