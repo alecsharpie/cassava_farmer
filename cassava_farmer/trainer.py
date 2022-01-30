@@ -46,7 +46,10 @@ class Trainer:
                             validation_steps=validation_steps,
                             callbacks = [es]).history
 
-        json.dump(history, 'history_aug_eff_model.json')
+        out_file = open("history_aug_eff_model.json", "w")
+        json.dump(history, out_file, indent = "")
+        out_file.close()
+
         model.save('aug_eff_model', save_format='h5')
 
         save_model_to_gcp()

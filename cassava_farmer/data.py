@@ -1,4 +1,3 @@
-from re import X
 from tensorflow.keras.utils import image_dataset_from_directory
 from google.cloud import storage
 from PIL import Image
