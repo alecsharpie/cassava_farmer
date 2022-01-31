@@ -40,7 +40,7 @@ class Trainer:
             validation_steps = val_size // batch_size
 
             history = model.fit(train_ds,
-                            epochs=5,
+                            epochs=100,
                             batch_size = batch_size,
                             steps_per_epoch=steps_per_epoch,
                             validation_data=val_ds,
