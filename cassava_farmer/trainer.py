@@ -34,7 +34,7 @@ class Trainer:
 
         elif self.where == 'local':
             train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
-            batch_size = 8
+            batch_size = 16
 
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
@@ -60,5 +60,5 @@ class Trainer:
         print('min accuracy', min(history['accuracy']))
 
 if __name__ == "__main__":
-    trainer = Trainer('gcp')
+    trainer = Trainer('local')
     trainer.train()
