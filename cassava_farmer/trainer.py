@@ -48,14 +48,14 @@ class Trainer:
                             callbacks = [es]).history
 
         elif self.where == 'local':
-            train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
-            batch_size = 8
+            train_ds, train_size, val_ds, val_size = get_image_generator_local(16)
+            batch_size = 16
 
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
 
             history = model.fit(train_ds,
-                                epochs=100,
+                                epochs=50,
                                 batch_size=batch_size,
                                 steps_per_epoch=steps_per_epoch,
                                 validation_data=val_ds,
