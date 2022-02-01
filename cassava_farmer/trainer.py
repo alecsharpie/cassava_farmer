@@ -12,7 +12,7 @@ class Trainer:
 
     def train(self):
 
-        es = EarlyStopping(patience=5)
+        es = EarlyStopping(patience=10)
 
         model = build_aug_eff_model((512, 512, 3), 5)
 
