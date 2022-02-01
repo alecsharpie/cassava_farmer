@@ -1,4 +1,4 @@
-from cassava_farmer.data import get_data_from_gcp, get_image_generator_local
+from cassava_farmer.data import get_data_from_gcp, get_image_generator_gcp, get_image_generator_local
 from cassava_farmer.model import build_aug_eff_model, save_model_to_gcp
 
 from tensorflow.keras.callbacks import EarlyStopping
@@ -32,8 +32,8 @@ class Trainer:
                             validation_steps=validation_steps,
                             callbacks = [es]).history
 
-        elif self.where == 'local':
-            train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
+        elif self.where == 'gcp_fuse':
+            train_ds, train_size, val_ds, val_size = get_image_generator_gcp(8)
             batch_size = 8
 
             steps_per_epoch = train_size // batch_size
@@ -46,6 +46,21 @@ class Trainer:
                             validation_data=val_ds,
                             validation_steps=validation_steps,
                             callbacks = [es]).history
+
+        elif self.where == 'local':
+            train_ds, train_size, val_ds, val_size = get_image_generator_local(8)
+            batch_size = 8
+
+            steps_per_epoch = train_size // batch_size
+            validation_steps = val_size // batch_size
+
+            history = model.fit(train_ds,
+                                epochs=100,
+                                batch_size=batch_size,
+                                steps_per_epoch=steps_per_epoch,
+                                validation_data=val_ds,
+                                validation_steps=validation_steps,
+                                callbacks=[es]).history
 
         out_file = open("history_aug_eff_model.json", "w")
         json.dump(history, out_file, indent = "")
