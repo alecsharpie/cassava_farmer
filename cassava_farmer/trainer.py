@@ -55,20 +55,20 @@ class Trainer:
             validation_steps = val_size // batch_size
 
             history = model.fit(train_ds,
-                                epochs=50,
+                                epochs=2,
                                 batch_size=batch_size,
                                 steps_per_epoch=steps_per_epoch,
                                 validation_data=val_ds,
                                 validation_steps=validation_steps,
                                 callbacks=[es]).history
 
-        out_file = open("history_aug_eff_model.json", "w")
+        out_file = open("history/history_aug_eff_model.json", "w")
         json.dump(history, out_file, indent = "")
         out_file.close()
 
         print(history)
 
-        model.save('aug_eff_model.h5', save_format='h5')
+        model.save('models/aug_eff_model_test')
 
         save_model_to_gcp()
 

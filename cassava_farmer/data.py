@@ -21,7 +21,7 @@ def get_data_from_gcp():
     for class_id, class_name in enumerate(class_names):
 
         blobs = bucket.list_blobs(
-            prefix=f"cassava_farmer/train_images/{class_name}")
+            prefix=f"cassava_farmer/train_images_small/{class_name}")
 
         images = []
 
@@ -90,7 +90,7 @@ def get_image_generator_gcp(batch_size):
 
 def get_image_generator_local(batch_size):
 
-    train_path = 'raw_data/cassava-leaf-disease-classification/train_images'
+    train_path = 'raw_data/cassava-leaf-disease-classification/train_images_small'
 
     train_ds = image_dataset_from_directory(
         train_path,
