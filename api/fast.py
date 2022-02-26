@@ -24,6 +24,9 @@ label_map = {
     '4': 'healthy'
 }
 
+model = load_model('saved_models/aug_eff_model1')
+
+
 @app.get("/")
 def root():
     return {"message": "Hello World"}
@@ -31,8 +34,6 @@ def root():
 
 @app.post("/predict/")
 async def predict(file: bytes = File(...)):
-
-    model = load_model('saved_models/aug_eff_model1')
 
     image = PIL.Image.open(io.BytesIO(file))
     image = image.resize((512, 512))
