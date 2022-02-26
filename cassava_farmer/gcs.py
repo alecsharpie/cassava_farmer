@@ -10,10 +10,9 @@ from cassava_farmer.params import BUCKET_NAME, MODEL_NAME, MODEL_VERSION
 # 'my_model/saved_model.pb']
 
 
-def storage_upload_folder(folder_to_upload='my_model',
-                          gcp_folder='models'):
+def storage_upload_folder(path_to_folder='my_model'):
     local_file_paths = []
-    for parent, dirnames, filenames in os.walk(folder_to_upload):
+    for parent, dirnames, filenames in os.walk(path_to_folder):
         for filename in filenames:
             local_file_paths.append(parent + '/' + filename)
     client = storage.Client().bucket(BUCKET_NAME)
@@ -24,14 +23,11 @@ def storage_upload_folder(folder_to_upload='my_model',
         print('folder uploaded sucessfully')
 
 
-def storage_upload_file(rm=False,
-                        file_name='my_model_history.json',
+def storage_upload_file(path_to_file='history/my_model_history.json',
                         gcp_folder='history'):
     client = storage.Client().bucket(BUCKET_NAME)
-    local_model_name = f'{gcp_folder}/{file_name}'
-    storage_location = f"models/{MODEL_NAME}/{MODEL_VERSION}/{local_model_name}"
-    blob = client.blob(storage_location)
-    blob.upload_from_filename(file_name)
+    file_name = path_to_file.split('/')[-1]
+    cloud_storage_location = f"/{MODEL_NAME}/{MODEL_VERSION}/{file_name}"
+    blob = client.blob(cloud_storage_location)
+    blob.upload_from_filename(path_to_file)
     print("file uploaded successfully")
-    if rm:
-        os.remove(file_name)

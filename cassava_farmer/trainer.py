@@ -1,5 +1,6 @@
 from cassava_farmer.data import get_data_from_gcp, get_image_generator_gcp, get_image_generator_local
 from cassava_farmer.model import build_aug_eff_model, save_model_to_gcp
+from gcs import storage_upload_file, storage_upload_folder
 
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -65,14 +66,16 @@ class Trainer:
         out_file = open("history/history_aug_eff_model.json", "w")
         json.dump(history, out_file, indent = "")
         out_file.close()
+        storage_upload_file('history/my_model_history.json')
+
 
         print(history)
+        print('min accuracy', min(history['accuracy']))
 
         model.save('models/aug_eff_model_test')
 
-        save_model_to_gcp()
+        storage_upload_folder('models/aug_eff_model_test')
 
-        print('min accuracy', min(history['accuracy']))
 
 if __name__ == "__main__":
     trainer = Trainer('local')
