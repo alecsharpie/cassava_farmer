@@ -1,6 +1,6 @@
 from cassava_farmer.data import get_data_from_gcp, get_image_generator_gcp, get_image_generator_local
 from cassava_farmer.model import build_aug_eff_model, save_model_to_gcp
-from gcs import storage_upload_file, storage_upload_folder
+from cassava_farmer.gcs import storage_upload_file, storage_upload_folder
 
 from tensorflow.keras.callbacks import EarlyStopping
 
@@ -55,16 +55,19 @@ class Trainer:
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
 
+            print('steps_per_epoch: ', steps_per_epoch)
+            print('validation_steps: ', validation_steps)
+
             history = model.fit(train_ds,
-                                epochs=2,
-                                batch_size=batch_size,
+                                epochs=1,
+                                #batch_size=batch_size,
                                 steps_per_epoch=steps_per_epoch,
                                 validation_data=val_ds,
                                 validation_steps=validation_steps,
-                                callbacks=[es]).history
+                                callbacks=[es])
 
         out_file = open("history/history_aug_eff_model.json", "w")
-        json.dump(history, out_file, indent = "")
+        json.dump(history.history, out_file, indent = "")
         out_file.close()
         storage_upload_file('history/my_model_history.json')
 

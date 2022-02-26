@@ -2,10 +2,14 @@ from tensorflow.keras import layers
 from tensorflow.keras import Sequential
 from tensorflow.keras.applications.efficientnet import EfficientNetB0
 
+from tensorflow.config import run_functions_eagerly
+
 from google.cloud import storage
 
 from tensorflow.keras.metrics import top_k_categorical_accuracy
 import functools
+
+run_functions_eagerly(True)
 
 def build_aug_eff_model(input_shape, output_classes):
 
@@ -38,7 +42,8 @@ def build_aug_eff_model(input_shape, output_classes):
 
     aug_eff_model.compile(optimizer='adam',
                         loss='sparse_categorical_crossentropy',
-                        metrics=['accuracy', top3_acc])
+                        metrics=['accuracy', top3_acc],
+                        run_eagerly=True)
 
     aug_eff_model.build((None, 512, 512, 3))
     aug_eff_model.summary()
