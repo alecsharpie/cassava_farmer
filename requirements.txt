@@ -21,15 +21,13 @@ mlflow
 
 # utilities
 six>=1.14
-joblib
-memoized-property
 
 # api
 fastapi
 uvicorn
 
 # model
-tensorflow==2.7.0
+tensorflow==2.8.0
 h5py==3.1.0
 
 python-multipart
