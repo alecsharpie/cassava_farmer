@@ -62,12 +62,13 @@ class Trainer:
 
             history = model.fit(
                 train_ds,
-                epochs=1,
+                epochs=5,
                 #batch_size=batch_size,
                 steps_per_epoch=steps_per_epoch,
                 validation_data=val_ds,
                 validation_steps=validation_steps,
                 callbacks=[es]).history
+
         history_file_name = f'history/{datetime.now().strftime("history_%Y/%m/%d_%H-%M-%S")}'
         out_file = open(history_file_name, "w")
         json.dump(history, out_file, indent="")
