@@ -87,7 +87,7 @@ class Trainer:
 
         elif self.where == 'colab':
             train_ds, train_size, val_ds, val_size = get_image_generator_local(32, data_path)
-            batch_size = 16
+            batch_size = 32
 
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
