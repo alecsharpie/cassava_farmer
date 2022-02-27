@@ -109,7 +109,7 @@ class Trainer:
         out_file = open(history_file_name, "w")
         json.dump(history, out_file, indent="")
         out_file.close()
-        storage_upload_file(history_file_name)
+        #storage_upload_file(history_file_name)
 
 
         print(history)
@@ -117,7 +117,7 @@ class Trainer:
 
         model.save('models/aug_eff_model_test')
 
-        storage_upload_folder('models/aug_eff_model_test')
+        #storage_upload_folder('models/aug_eff_model_test')
 
 
 if __name__ == "__main__":
