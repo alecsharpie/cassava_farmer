@@ -62,7 +62,7 @@ class Trainer:
 
             history = model.fit(
                 train_ds,
-                epochs=1,
+                epochs=50,
                 #batch_size=batch_size,
                 steps_per_epoch=steps_per_epoch,
                 validation_data=val_ds,
