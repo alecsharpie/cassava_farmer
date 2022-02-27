@@ -37,12 +37,12 @@ def build_aug_eff_model(input_shape, output_classes):
         layers.Dense(output_classes, activation='softmax')
     ])
 
-    top3_acc = functools.partial(top_k_categorical_accuracy, k=3)
-    top3_acc.__name__ = 'top3_acc'
+    #top3_acc = functools.partial(top_k_categorical_accuracy, k=3)
+    #top3_acc.__name__ = 'top3_acc'
 
     aug_eff_model.compile(optimizer='adam',
                         loss='sparse_categorical_crossentropy',
-                        metrics=['accuracy', top3_acc])
+                        metrics=['accuracy'])
                         #run_eagerly=True)
 
     aug_eff_model.build((None, 512, 512, 3))

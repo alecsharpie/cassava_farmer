@@ -86,8 +86,8 @@ class Trainer:
 
 
         elif self.where == 'colab':
-            train_ds, train_size, val_ds, val_size = get_image_generator_local(32, data_path)
-            batch_size = 32
+            train_ds, train_size, val_ds, val_size = get_image_generator_local(1, data_path)
+            batch_size = 1
 
             steps_per_epoch = train_size // batch_size
             validation_steps = val_size // batch_size
@@ -105,7 +105,7 @@ class Trainer:
                 validation_batch_size=batch_size,
                 callbacks=[es]).history
 
-        history_file_name = f'history/{datetime.now().strftime("history_%Y-%m-%d_%H-%M-%S")}'
+        history_file_name = f'history/{datetime.now().strftime("history_%Y-%m-%d_%H-%M-%S")}.json'
         out_file = open(history_file_name, "w")
         json.dump(history, out_file, indent="")
         out_file.close()
