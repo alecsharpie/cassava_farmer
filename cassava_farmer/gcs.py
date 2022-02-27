@@ -20,7 +20,7 @@ def storage_upload_folder(path_to_folder='my_model'):
         cloud_storage_location = f"/{MODEL_NAME}/{MODEL_VERSION}/{file_name}"
         blob = client.blob(cloud_storage_location)
         blob.upload_from_filename(file_name)
-        print('folder uploaded sucessfully')
+    print('folder uploaded sucessfully')
 
 
 def storage_upload_file(path_to_file='history/my_model_history.json',
