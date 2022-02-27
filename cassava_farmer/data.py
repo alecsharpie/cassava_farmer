@@ -88,9 +88,11 @@ def get_image_generator_gcp(batch_size):
     return train_ds, train_size, val_ds, val_size
 
 
-def get_image_generator_local(batch_size):
+def get_image_generator_local(
+    batch_size,
+    train_path='raw_data/cassava-leaf-disease-classification/train_images_mid'
+):
 
-    train_path = 'raw_data/cassava-leaf-disease-classification/train_images_mid'
 
     train_ds = image_dataset_from_directory(
         train_path,
