@@ -105,19 +105,19 @@ class Trainer:
                 validation_batch_size=batch_size,
                 callbacks=[es]).history
 
-        history_file_name = f'history/{datetime.now().strftime("history_%Y-%m-%d_%H-%M-%S")}.json'
-        out_file = open(history_file_name, "w")
-        json.dump(history, out_file, indent="")
-        out_file.close()
-        #storage_upload_file(history_file_name)
+            history_file_name = f'history/{datetime.now().strftime("history_%Y-%m-%d_%H-%M-%S")}.json'
+            out_file = open(history_file_name, "w")
+            json.dump(history, out_file, indent="")
+            out_file.close()
+            #storage_upload_file(history_file_name)
 
 
-        print(history)
-        print('min accuracy', min(history['accuracy']))
+            print(history)
+            print('min accuracy', min(history['accuracy']))
 
-        model.save('models/aug_eff_model_test')
+            model.save('models/aug_eff_model_test')
 
-        #storage_upload_folder('models/aug_eff_model_test')
+            #storage_upload_folder('models/aug_eff_model_test')
 
 
 if __name__ == "__main__":
