@@ -24,7 +24,7 @@ label_map = {
     '4': 'healthy'
 }
 
-model = load_model('saved_models/aug_eff_model1')
+model = load_model('models/best_model/eff_model')
 
 
 @app.get("/")
