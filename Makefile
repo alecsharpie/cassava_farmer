@@ -84,5 +84,5 @@ gcp_submit_training:
 #      GCP
 # ----------------------------------
 
-docker_build_train:
+docker_build_trainer:
 	docker build -t cassava-trainer -f train.Dockerfile .
