@@ -79,3 +79,10 @@ gcp_submit_training:
 		--runtime-version=${RUNTIME_VERSION} \
 		--region ${REGION} \
 		--stream-logs
+
+# ----------------------------------
+#      GCP
+# ----------------------------------
+
+docker_build_train:
+	docker build -t cassava-trainer -f train.Dockerfile .
