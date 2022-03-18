@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM ubuntu:bionic
 
 RUN mkdir .ssh
 #ARG GCP_KEY
@@ -12,11 +12,13 @@ ENV GOOGLE_APPLICATION_CREDENTIALS=/.ssh/gcp.json
 #RUN apt -qq update
 #RUN apt -qqy install gcsfuse
 RUN apt update && apt upgrade
-RUN apt install curl
+RUN apt -y install gnupg
+RUN apt -y install curl
 
-RUN export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
-RUN echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -#
+RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-bionic main" > /etc/apt/sources.list.d/gcsfuse.list
+##RUN export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
+#RUN echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" > /etc/apt/sources.list.d/gcsfuse.list
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 #RUN apt-get update
 RUN apt-get install gcsfuse
 
