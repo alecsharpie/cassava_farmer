@@ -13,6 +13,7 @@ RUN apt -qq update
 RUN apt -qqy install gcsfuse
 
 RUN mkdir gcs_bucket
-RUN gcsfuse --implicit-dirs image-datasets-alecsharpie gcs_bucket
+#RUN gcsfuse --implicit-dirs image-datasets-alecsharpie gcs_bucket
+CMD cat $(echo $GOOGLE_APPLICATION_CREDENTIALS)
 
-CMD ls gcs_bucket
+#CMD ls gcs_bucket
