@@ -1,4 +1,4 @@
-FROM python:3.8.12-buster
+FROM debian:buster-slim
 
 RUN mkdir .ssh
 #ARG GCP_KEY
@@ -7,13 +7,24 @@ COPY credentials_gcp.json /.ssh/gcp.json
 ENV GOOGLE_APPLICATION_CREDENTIALS=/.ssh/gcp.json
 
 
-RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-buster main" > /etc/apt/sources.list.d/gcsfuse.list
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
-RUN apt -qq update
-RUN apt -qqy install gcsfuse
+#RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-buster main" > /etc/apt/sources.list.d/gcsfuse.list
+#RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+#RUN apt -qq update
+#RUN apt -qqy install gcsfuse
+RUN apt update && apt upgrade
+RUN apt install curl
+
+RUN export GCSFUSE_REPO=gcsfuse-`lsb_release -c -s`
+RUN echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list
+RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -#
+#RUN apt-get update
+RUN apt-get install gcsfuse
 
 RUN mkdir gcs_bucket
-#RUN gcsfuse --implicit-dirs image-datasets-alecsharpie gcs_bucket
-CMD cat $(echo $GOOGLE_APPLICATION_CREDENTIALS)
+#RUN gcsfuse --key-file=/.ssh/gcp.json --log-file=logs.txt image-datasets-alecsharpie gcs_bucket
+#CMD cat $(echo $GOOGLE_APPLICATION_CREDENTIALS)
 
 #CMD ls gcs_bucket
+
+
+#echo "image-datasets-alecsharpie /gcs_bucket gcsfuse rw,noauto,user,key_file=/.ssh/gcp.json" >> /etc/fstab
