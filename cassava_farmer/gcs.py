@@ -3,12 +3,6 @@ import os
 from google.cloud import storage
 from cassava_farmer.params import BUCKET_NAME, MODEL_NAME, MODEL_VERSION
 
-# files = ['my_model/assets/vocab.txt',
-# 'my_model/variables/variables.data-00000-of-00001',
-# 'my_model/variables/variables.index',
-# 'my_model/keras_metadata.pb',
-# 'my_model/saved_model.pb']
-
 
 def storage_upload_folder(path_to_folder='my_model'):
     local_file_paths = []
