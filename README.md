@@ -1,10 +1,5 @@
-# Data analysis
-- Document here the project: cassava_farmer
-- Description: Project Description
-- Data Source:
-- Type of analysis:
-
-Please document the project the better you can.
+# Cassava Disease Identification
+## An API exposing a Tensorflow Model which predicts plant diseases from low quality cassava leaf images
 
 # Startup the project
 
