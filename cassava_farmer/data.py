@@ -3,8 +3,16 @@ from google.cloud import storage
 from PIL import Image
 import io
 import numpy as np
+import os
+import tensorflow as tf
+from tensorflow.data import Dataset
+from tensorflow import py_function
+from tensorflow.data import AUTOTUNE
 
-def get_data_from_gcp():
+from cassava_farmer.data_helper import get_training_example
+
+
+def get_array_sdk():
 
     class_names = [
         'cassava_bacterial_blight', 'cassava_brown_streak_disease',
@@ -62,37 +70,10 @@ def get_data_from_gcp():
 
     return X_train, X_val, y_train, y_val
 
-
-def get_image_generator_gcp(batch_size):
-
-    train_path = '/gcs/image-datasets-alecsharpie/cassava_farmer/train_images/'
-
-    train_ds = image_dataset_from_directory(
-        train_path, batch_size=batch_size, subset='training', validation_split=.20, seed = 42, image_size=(512, 512),
-    )
-
-    class_names = train_ds.class_names
-
-    train_size = train_ds.cardinality().numpy()
-    train_ds = train_ds.unbatch().batch(batch_size)
-    train_ds = train_ds.repeat()
-
-
-    val_ds = image_dataset_from_directory(
-        train_path, batch_size=32, subset='validation', validation_split=.20, seed = 42, image_size=(512, 512)
-    )
-
-    val_size = val_ds.cardinality().numpy()
-    val_ds = val_ds.unbatch().batch(batch_size)
-    val_ds = val_ds.repeat()
-    return train_ds, train_size, val_ds, val_size
-
-
-def get_image_generator_local(
+def get_dataset_directory(
     batch_size,
     train_path='raw_data/cassava-leaf-disease-classification/train_images_mid'
 ):
-
 
     train_ds = image_dataset_from_directory(
         train_path,
@@ -103,9 +84,6 @@ def get_image_generator_local(
         image_size=(512, 512),
     )
 
-    class_names = train_ds.class_names
-
-    train_size = train_ds.cardinality().numpy()
     train_ds = train_ds.unbatch().batch(batch_size)
     train_ds = train_ds.repeat()
 
@@ -116,11 +94,30 @@ def get_image_generator_local(
                                           seed=42,
                                           image_size=(512, 512))
 
-    val_size = val_ds.cardinality().numpy()
     val_ds = val_ds.unbatch().batch(batch_size)
     val_ds = val_ds.repeat()
-    return train_ds, train_size, val_ds, val_size
+    return train_ds, val_ds
+
+
+def get_dataset_gfile(file_glob):
+    # create dataset generator of file paths
+    list_ds = Dataset.list_files(file_glob)
+    # split the data into train and validation sets
+    val_size = int(list_ds.cardinality().numpy() * 0.8)
+    list_train_ds = list_ds.skip(val_size)
+    list_val_ds = list_ds.take(val_size)
+
+    # convert file paths into labelled image data
+    # Set `num_parallel_calls` so multiple images are loaded/processed in parallel.
+    train_ds = list_train_ds.map(lambda x: py_function(
+        get_training_example, [x], [tf.float32, tf.int8]),
+                                 num_parallel_calls=AUTOTUNE)
+    val_ds = list_val_ds.map(lambda x: py_function(get_training_example, [x],
+                                                   [tf.float32, tf.int8]),
+                             num_parallel_calls=AUTOTUNE)
+    return train_ds, val_ds
+
 
 
 if __name__ == "__main__":
-    print(get_image_generator_local())
+    print(get_dataset_mount())
